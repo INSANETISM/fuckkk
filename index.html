@@ -1,0 +1,2533 @@
+
+
+<html lang="en">
+
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+
+</head>
+
+<style>
+font-family: 'Roboto Mono', monospace, arial, sans-serif;
+/* Global box-sizing for consistent sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Ensure html and body fill viewport fully */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Gradient animation */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* General Layout and Body Styling */
+body {
+  font-family: 'Roboto Mono', monospace, arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1594eb, #A36AFF, #60D394, #FF8C42);
+  background-size: 600% 600%;
+  animation: gradientFlow 15s ease infinite;
+  color: white;
+  overflow-x: hidden; /* ✅ Allow scroll and prevent cutoff */
+}
+
+/* Main Layout Container */
+.main-layout {
+  display: flex;
+  flex-direction: column; /* stack children vertically */
+  justify-content: center; /* optional */
+  align-items: center; /* optional: centers items horizontally */
+  max-width: 900px;
+  margin: 20px auto;
+  gap: 20px;
+  padding: 40px; /* your spacing */
+  width: 95%;
+  /* remove flex-wrap since it's a column layout */
+}
+
+
+/* Main container styles */
+.calculator,
+.roles-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
+  margin-bottom: 0;
+  padding: 20px;
+  background-color: #070212;
+  color: #d96057;
+  border: 4px solid #0a0909;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+/* Specific styling for roles-container to align buttons and roles */
+.roles-container {
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Buttons column - add right margin for spacing */
+.button-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100px;
+  margin-right: 10px; /* added space to separate from roles */
+}
+
+/* Slightly smaller buttons in button-column */
+.button-column button {
+  font-size: 14px;      /* smaller font */
+  padding: 8px 8px;     /* less padding */
+  width: 90px;          /* slightly narrower */
+  box-sizing: border-box;
+}
+
+/* Roles column with some left margin for extra spacing */
+.roles-column {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-left: 10px; /* small left margin */
+}
+
+/* Role groups inside roles-column */
+.roles-column > div {
+  max-width: 400px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  flex: 1;
+}
+
+/* Role buttons styling */
+.role-btn {
+  font-size: 11px;
+  width: 150px;
+  height: 35px;
+  background-color: #555555;
+  color: white;
+  border: 2px solid #ddd;
+  cursor: pointer;
+  font-weight: normal;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s, border-color 0.3s;
+  margin: 5px 0;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role-btn:hover {
+  background-color: #777777;
+  color: white;
+  transform: scale(1.1);
+  border-color: #eee;
+}
+
+.role-btn.active {
+  background-color: #A36AFF;
+  color: white;
+  border: 2px solid #7B52CC;
+  font-weight: normal;
+  box-shadow: 0 0 8px #A36AFF;
+}
+
+/* Action buttons styling */
+.action-btn {
+  width: 100%;
+  background-color: #60D394;
+  color: black;
+  font-weight: 700;
+  Border-radius: 6px;
+}
+
+.action-btn:hover {
+  background-color: #4fbf7b;
+  color: white;
+  transform: scale(1.05);
+}
+
+#calculateBtn {
+  background-color: #1594eb;
+  color: black;
+  font-weight: 600;
+  border: 2px solid #1594eb;
+  Border-radius: 6px;
+  box-shadow: 0 0 8px #1594eb;
+}
+
+#calculateBtn:hover {
+  background-color: #0f76d6;
+  box-shadow: 0 0 12px #0f76d6;
+  color: white;
+}
+
+#clearAllBtn {
+  background-color: #FF8C42;
+  color: black;
+  border: 2px solid #d76f29;
+  Border-radius: 6px;
+  box-shadow: 0 0 8px #FF8C42;
+}
+
+#clearAllBtn:hover {
+  background-color: #d76f29;
+  color: white;
+}
+
+#clearRolesBtn {
+  background-color: #A36AFF;
+  color: black;
+  border: 2px solid #864fcc;
+  box-shadow: 0 0 8px #A36AFF;
+}
+
+#clearRolesBtn:hover {
+  background-color: #864fcc;
+  color: white;
+}
+
+.addBtn {
+
+background-color: #4caf50;
+
+color: black;
+
+border: none;
+
+padding: 0px 20px;
+
+text-align: center;
+
+display: inline-block;
+
+font-size: 30px;
+
+margin: 4px 2px;
+
+transition-duration: 1s;
+
+cursor: pointer;
+
+border-radius: 50px;
+
+}
+
+
+
+.addBtn:hover {
+
+background-color: lightgreen;
+
+transform: scale(1.2);
+
+}
+
+
+
+.action-btn:hover {
+
+opacity: 0.4;
+
+transform: scale(1.1);
+
+}
+
+
+/* Headings */
+h1, h2 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+/* Tabs container */
+.tab {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  border: 4px solid #0a0909;
+  background-color: #171721;
+  border-radius: 20px;
+  padding: 2px 0; /* less vertical padding */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tab buttons */
+.tab button {
+  background-color: #171721;
+  color: #60D394; /* green text */
+  font-weight: bold;
+  font-family: Calibri, sans-serif;
+  font-size: 18px;       /* Slightly smaller font size */
+  padding: 6px 10px;    /* Slightly smaller padding */
+  border: 2px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  min-width: 160px;      /* Adjusted width */
+  Margin: 5px 10px;
+}
+
+/* Hover effect */
+.tab button:hover {
+  background-color: #60D394;
+  color: white;
+  transform: scale(1.05);
+  border-color: #1594eb;
+}
+
+/* Active tab */
+.tab button.active {
+  background-color: #60D394;
+  color: black;
+  border: 2px solid #A36AFF;
+  box-shadow: 0 0 8px #A36AFF;
+  transform: scale(1.05);
+}
+
+/* Tab content panel */
+.tabcontent {
+  display: none;
+  padding: 16px;
+  border: 4px solid #0a0909;
+  border-radius: 20px;
+  margin-top: 10px;
+  min-height: 300px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Show active tab content */
+.tabcontent.active {
+  display: block;
+}
+
+.item-price,
+
+.inline,
+
+.roles-content {
+
+display: flex;
+
+align-items: center;
+
+justify-content: space-between;
+
+margin-bottom: 15px;
+
+}
+
+
+
+.item-price select,
+
+.calculator input[type="number"] {
+
+padding: 8px;
+
+border: 3px solid #2b2727;
+
+border-radius: 22px;
+
+background-color: #694542;
+
+color: black;
+
+}
+
+
+
+.item-price span {
+
+width: 45%;
+
+text-align: right;
+
+overflow: hidden;
+
+white-space: nowrap;
+
+text-overflow: ellipsis;
+
+}
+
+
+
+.summary,
+
+.roles-content {
+
+margin-top: 10px;
+
+margin-bottom: 10px;
+max-height: 300px; /* limit height */
+overflow-y: auto;  /* enable scrolling */
+}
+
+.roles-container .role-label {
+
+font-size: 50%;
+
+display: grid;
+grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+background-color: grey;
+gap: 10px; /* space between buttons */
+color: white;
+
+padding: 10px;
+
+border-radius: 20px;
+
+margin: 20px auto;
+
+cursor: pointer;
+
+transition: background-color 0.3s;
+
+border: 1px solid lightgrey;
+
+}
+
+.role-btn {
+  width: 100%; /* fill the grid cell */
+  min-width: auto; /* remove any fixed min width */
+  margin: 0; /* spacing handled by grid gap */
+}
+
+
+.roles-container .role-label.active {
+
+background-color: #add8e6;
+
+color: white;
+
+}
+
+
+
+.summary {
+
+display: flex;
+
+flex-direction: column;
+
+align-items: flex-start;
+
+margin-top: 10px;
+
+margin-bottom: 10px;
+
+}
+
+
+
+.summary div {
+
+font-size: 14px;
+
+font-family: Arial Unicode MS, sans-serif;
+
+color: lightgrey;
+
+margin: 2px;
+
+margin-left: 12px;
+
+text-align: left;
+
+width: 100%;
+
+}
+
+
+
+/* Style for the 'x' remove buttons in the summary */
+
+.summary .removeOneBtn {
+
+background-color: orange;
+
+color: black;
+
+border: none;
+
+border-radius: 50%;
+
+padding: 3px 6px;
+
+font-weight: bold;
+
+cursor: pointer;
+
+transition: background-color 0.2s, transform 0.2s;
+
+}
+
+
+
+.summary .removeOneBtn:hover {
+
+background-color: darkorange;
+
+transform: scale(1.2);
+
+}
+
+.summary .removeAllBtn {
+  background-color: #A36AFF !important;
+  color: black !important;
+  border: none;
+  border-radius: 50%;
+  padding: 3px 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.summary .removeAllBtn:hover {
+
+background-color: #864fcc;
+
+transform: scale(1.2);
+
+}
+
+
+
+/* Style for quantity labels */
+
+.tabcontent label {
+
+margin-right: 5px;
+
+}
+
+
+
+#buyItemButtons,
+
+#itemButtons {
+
+display: flex;
+
+flex-wrap: wrap;
+
+justify-content: flex-start;
+
+}
+
+
+
+.item-button {
+
+display: inline-block;
+
+width: 135px;
+
+padding: 10px;
+
+padding-left: 2px;
+
+margin: 5px;
+
+font-size: 11.5px;
+
+
+
+background-color: #444;
+
+color: white;
+
+border: 2px solid darkgrey;
+
+text-align: center;
+
+cursor: pointer;
+
+border-radius: 5px;
+
+transition: background-color 0.2s, transform 0.2s;
+
+white-space: nowrap;
+
+}
+
+
+
+.item-button:hover {
+
+background-color: #555;
+
+transform: scale(1.08);
+
+}
+
+.return-button {
+  background-color: #4caf50; /* green */
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 50px;
+  transition: background-color 0.3s, transform 0.3s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.return-button:hover {
+  background-color: #388e3c; /* darker green */
+  transform: scale(1.1);
+}
+.logo-heading {
+  font-family: 'Black Ops One', cursive;
+  font-size: 32px; /* Bigger heading size */
+  color: #FF8C42;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.site-footer {
+  background-color: #171721; /* dark background matching your theme */
+  color: #d96057;            /* matching your accent color */
+  text-align: center;
+  padding: 15px 10px;
+  font-size: 14px;
+  border-top: 4px solid #2b2727; /* matching your border style */
+  margin-top: 40px;
+  font-family: 'Roboto Mono', monospace, arial, sans-serif; /* same font family */
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 80px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  margin: auto;
+  padding: 20px;
+  border: 2px solid orange;
+  width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: white;
+  white-space: pre-wrap;
+  font-family: monospace;
+  border-radius: 12px;
+}
+
+.modal-content .close {
+  color: orange;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* Responsive styling for mobile devices */
+@media (max-width: 600px) {
+  /* Stack main layout vertically and add padding */
+  .main-layout {
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
+    Padding-right: 15px;
+    Box-sizing: border-box;
+  }
+
+  /* Calculator and roles container become full width and stacked */
+  .calculator,
+  .roles-container {
+    flex-direction: column;
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Roles container stacks vertically */
+  .roles-container {
+    align-items: stretch;
+  }
+
+  /* Buttons column expands full width and margins reset */
+  .button-column {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 15px;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 5px;
+  }
+
+  /* Buttons in button column get wider and bigger tap targets */
+  .button-column button {
+    width: auto;
+    flex-grow: 1;
+    font-size: 16px;
+    padding: 12px 8px;
+    min-width: 80px;
+  }
+
+  /* Roles column stacks vertically with some gap */
+  .roles-column {
+    flex-direction: column;
+    margin-left: 0;
+    gap: 10px;
+  }
+
+  /* Role groups fill width and stack buttons */
+  .roles-column > div {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* two columns, adjust as needed */
+    gap: 8px;
+  }
+
+  /* Role buttons fill grid cells and get bigger */
+  .role-btn {
+    width: 100%;
+    min-width: auto;
+    height: 40px;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 8px;
+  }
+
+  /* Tab container adjusts */
+  .tab {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* Tab buttons full width and bigger font */
+  .tab button {
+    flex: 1 1 100%;
+    min-width: 0;
+    font-size: 16px;
+    padding: 14px 0;
+    margin: 5px 0;
+  }
+
+  /* Buy/Sell buttons container wraps with smaller buttons */
+  #buyItemButtons,
+  #itemButtons {
+    justify-content: center;
+  }
+
+  /* Item buttons smaller width for smaller screens */
+  .item-button {
+    width: 120px;
+    font-size: 13px;
+    padding: 8px 4px;
+    margin: 4px;
+  }
+
+  /* Summary box scrollable with max height */
+  .summary {
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 14px;
+  }
+  
+  /* Modal content smaller width on mobile */
+  .modal-content {
+    width: 95%;
+    max-height: 70vh;
+  }
+}
+/* Responsive tweaks for smaller screens */
+@media (max-width: 600px) {
+  /* Make role buttons wider and allow wrapping */
+  .role-btn {
+    width: auto;
+    min-width: 120px;   /* min width but flexible */
+    font-size: 12px;    /* slightly bigger text */
+    white-space: normal; /* allow wrapping */
+    padding: 5px 10px;
+  }
+
+  /* Calculate button fits better */
+  #calculateBtn {
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 10px;
+  }
+
+  /* Summary modal adjustments */
+  .modal-content {
+    width: 95% !important; /* almost full screen width */
+    max-height: 70vh !important; /* smaller height */
+    padding: 15px !important;
+    font-size: 14px !important;
+  }
+
+  /* Buy/Sell buttons wrapping nicely */
+  .item-button {
+    min-width: 110px;
+    font-size: 13px;
+    white-space: normal;
+    padding: 8px 6px;
+  }
+
+  /* Tabs buttons smaller and flexible */
+  .tab button {
+    min-width: 120px;
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+}
+</style>
+
+<body>
+  <div class="main-layout">
+
+    <!-- Calculator Section -->
+    <div class="calculator">
+    <h1 class="logo-heading">B L O O D L I N E Z</h1>
+
+      <!-- Tabs -->
+      <div class="tab">
+        <button class="tablinks" data-tab="buyTab">Buy</button>
+        <button class="tablinks" data-tab="sellTab">Sell</button>
+      </div>
+
+      <!-- Buy Tab -->
+      <div class="tabcontent" align="left" id="buyTab">
+        <div id="buyItemButtons" style="position: relative;">
+          <!-- Buttons for categories/items will be dynamically added here -->
+        </div>
+        <div id="buySummary" class="summary"></div>
+      </div>
+
+      <!-- Sell Tab -->
+      <div class="tabcontent" id="sellTab">
+        <div id="itemButtons" style="position: relative;">
+          <!-- Buttons for categories/items will be dynamically added here -->
+        </div>
+        <div id="sellSummary" class="summary"></div>
+      </div>
+    </div>
+
+<!-- Roles Container Section -->
+<div class="roles-container">
+  <div class="button-column">
+    <button id="calculateBtn" class="action-btn">Calculate</button>
+    <button id="clearAllBtn" class="action-btn">Clear All</button>
+    <button id="clearRolesBtn" class="action-btn">Clear Roles</button>
+
+    <!-- Role bonus display -->
+    <div id="bonus-wrapper" style="margin-top: 6px; color: orange; font-weight: normal; font-size: 1.1em;">
+      Role Bonus: <span id="bonus-total">₵0</span>
+    </div>
+  </div>
+
+  <div class="roles-column">
+    <div id="roleColumn1"></div>
+    <div id="roleColumn2"></div>
+  </div>
+</div>
+
+  </div> <!-- END main-layout -->
+
+<footer class="site-footer">
+  <p>© 2025 BloodlineZ. All rights reserved.</p>
+  <p class="footer-subtext">Presented by BittaTism</p>
+</footer>
+
+<!-- Summary Modal -->
+<div id="summaryModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <pre id="modalText"></pre>
+  </div>
+</div>
+
+</body>
+
+<script>
+
+// Define Items and Prices
+
+const buyitems = {
+
+"Weapons": {
+
+"Guns": {
+
+"Automatic": [
+
+{ name: "Aug AX", price: 8500 },
+
+{ name: "M4A1", price: 8500 },
+
+{ name: "KAM", price: 8500 },
+
+{ name: "Vaiga", price: 5500 }
+
+],
+
+"Ranged": [
+
+{ name: "LAR", price: 5500 },
+
+{ name: "DMR", price: 0 },
+
+{ name: "M70 Tundra", price: 6500 },
+
+{ name: "VS89", price: 8500 },
+
+{ name: "VSD", price: 6500 },
+
+{ name: "Mosin", price: 6500 }
+
+],
+
+"Melee": [
+
+{ name: "Combat Knife", price: 500 },
+
+{ name: "Hunter Knife", price: 500 }
+
+]
+
+},
+
+"Attachments": {
+
+"Suppressors": [
+
+{ name: "Standardized Suppressor", price: 7500 },
+
+{ name: "Normalized Suppressor", price: 7500 },
+
+{ name: "Pistol Suppressor", price: 1000 },
+
+{ name: "Bottle Suppressor", price: 2000 }
+
+],
+
+"Weapon Parts": [
+
+{ name: "LAR Lightweight Buttstock", price: 50 },
+
+{ name: "LAR Polymer Buttstock", price: 50 },
+
+{ name: "M4 CQB Buttstock", price: 50 },
+
+{ name: "M4 Polymer Handguard", price: 50 },
+
+{ name: "M4 MP Handguard", price: 50 }
+
+]
+
+},
+
+"Optics": {
+
+"Short Range": [
+
+{ name: "Red Dot (Baraka)", price: 100 },
+
+{ name: "PSO-1 Scope", price: 400 }
+
+],
+
+"Long Range": [
+
+{ name: "ATOG 4x", price: 3200 },
+
+{ name: "ATOG 6x", price: 400 },
+
+{ name: "PU Scope", price: 200 },
+
+{ name: "Hunter Scope", price: 450 }
+
+],
+
+"NV Optics": [
+
+{ name: "Starlight NV", price: 1000 },
+
+{ name: "Kazuar NV", price: 1000 }
+
+]
+
+},
+
+"Magazines": {
+
+"Auto Mags": [
+
+{ name: "40 Round C-Mag", price: 1200 },
+
+{ name: "60 Round C-Mag", price: 1500 },
+
+{ name: "30 Round KAM Poly Mag", price: 500 },
+
+{ name: "75 Round KAM Drum Mag", price: 1500 },
+
+{ name: "20 Round Vaiga Drum Mag", price: 500 },
+
+{ name: "30 Round AUR Mag", price: 350 }
+
+],
+
+"Sniper Mags": [
+
+{ name: "20 Round DMR Mag", price: 0 },
+
+{ name: "20 Round LAR Mag", price: 600 },
+
+{ name: "10 Round VSD Mag", price: 500 },
+
+{ name: "10 Round VS89 Mag", price: 500 }
+
+]
+
+},
+
+"Ammo": [
+
+{ name: ".357", price: 50, bulkOptions: [1, 5, 10] },
+
+{ name: "9x39 AP", price: 100, bulkOptions: [1, 5, 10] },
+
+{ name: "9x19mm", price: 50, bulkOptions: [1, 5, 10] },
+
+{ name: "5.56x45", price: 1000, bulkOptions: [1, 5, 10] },
+
+{ name: ".308 WIN", price: 1000, bulkOptions: [1, 5, 10] },
+
+{ name: "545x39", price: 850, bulkOptions: [1, 5, 10] },
+
+{ name: "7.62x39", price: 850, bulkOptions: [1, 5, 10] },
+
+{ name: "7.62x54mmR", price: 1000, bulkOptions: [1, 5, 10] },
+
+{ name: ".45ACP", price: 500, bulkOptions: [1, 5, 10] },
+
+{ name: "12GA Buck", price: 850, bulkOptions: [1, 5, 10] }
+
+]
+
+},
+
+"Clothing": {
+
+"Headgear": [
+
+{ name: "Assault Helmet", price: 1000 },
+
+{ name: "Assault Visor", price: 200 },
+
+{ name: "Tactical Helm", price: 600 },
+
+{ name: "NV Goggles", price: 2500 },
+
+{ name: "NVG Strap", price: 300 },
+
+{ name: "Witch Hood", price: 500 },
+
+{ name: "Cowboy Hat", price: 300 }
+
+],
+
+"Jackets": [
+
+{ name: "BDU Jacket", price: 400 },
+
+{ name: "Combat Jacket", price: 300 },
+
+{ name: "Field Jacket", price: 600 },
+
+{ name: "CUU Jacket", price: 300 },
+
+{ name: "Hunter Jacket", price: 500 }
+
+],
+
+"Backpacks": [
+
+{ name: "Field Bag", price: 600 },
+
+{ name: "Hunter Backpack", price: 400 },
+
+{ name: "Skull Backpack", price: 500 },
+
+{ name: "Combat Backpack", price: 400 },
+
+{ name: "Black Drypack", price: 400 },
+
+{ name: "Assault Bag", price: 200 },
+
+{ name: "Army Pouch", price: 0 }
+
+],
+
+"Plate Carriers": [
+
+{ name: "Plate Carrier", price: 1800 },
+
+{ name: "Pouches", price: 200 },
+
+{ name: "Holster", price: 50 }
+
+],
+
+"Pants": [
+
+{ name: "BDU Pants", price: 300 },
+
+{ name: "Combat Pants", price: 200 },
+
+{ name: "Cargo Pants", price: 500 },
+
+{ name: "CUU Pants", price: 300 },
+
+{ name: "Hunter Pants", price: 500 }
+
+],
+
+"Misc Clothing": [
+
+{ name: "Gloves", price: 200 },
+
+{ name: "Sheath", price: 50 },
+
+{ name: "Belt", price: 150 },
+
+{ name: "Hip Pack", price: 250 }
+
+],
+
+"Boots": [
+
+{ name: "Black Assault Boots", price: 300 },
+
+{ name: "Tan Jungle Boots", price: 200 },
+
+{ name: "Green Jungle Boots", price: 200 },
+
+{ name: "Hunter Boots", price: 200 }
+
+],
+
+"Ghillie": [
+
+{ name: "Ghillie Suit", price: 1800 },
+
+{ name: "Ghillie Hood", price: 800 },
+
+{ name: "Ghillie Rifle Wrap", price: 500 }
+
+],
+
+"Face": [
+
+{ name: "Green Bandana", price: 250 },
+
+{ name: "Black Bandana", price: 250 },
+
+{ name: "Camo Bandana", price: 250 },
+
+{ name: "Green Ski Mask", price: 200 },
+
+{ name: "Black Ski Mask", price: 200 },
+
+{ name: "Skull Ski Mask", price: 200 },
+
+{ name: "Mime Mask", price: 250 }
+
+]
+
+},
+
+"Meds & Tools": {
+
+"Pharmaceuticals": [
+
+{ name: "NBC Filters", price: 100, bulkOptions: [1, 2, 5] },
+
+{ name: "NBC Masks", price: 300, bulkOptions: [1, 2, 5] },
+
+{ name: "Bandages (2-pack)", price: 50 },
+
+{ name: "Saline Bag", price: 250 },
+
+{ name: "Tetracycline", price: 200 },
+
+{ name: "Charcoal Tablets", price: 200 },
+
+{ name: "Multi Vitamins", price: 100 },
+
+{ name: "PoX Antidote", price: 300 },
+
+{ name: "Codeine Pills", price: 250 },
+
+{ name: "Morphine Injector", price: 100 },
+
+{ name: "Blood Test Kit", price: 100 },
+
+{ name: "Blood Collection Kit", price: 50 },
+
+{ name: "IV Start Kit", price: 50 },
+
+{ name: "Chlorine Tablets", price: 100 }
+
+],
+
+"Miscellaneous": [
+
+{ name: "Canteen", price: 100 },
+
+{ name: "Tourist Map", price: 0 },
+
+{ name: "9V Batteries (4-pack)", price: 50, bulkOptions: [1, 5, 10] },
+
+{ name: "Bear Trap", price: 500 },
+
+{ name: "Construction Light", price: 400 },
+
+{ name: "Cable Reel", price: 400 },
+
+{ name: "Faction Flags", price: 0 },
+
+{ name: "Power Generator", price: 800 },
+
+{ name: "Megaphone", price: 300 },
+
+{ name: "Gun Cleaning Kit", price: 400 },
+
+{ name: "Duct Tape", price: 200 },
+
+{ name: "Sewing Kit", price: 300 },
+
+{ name: "Leather Repair Kit", price: 300 },
+
+{ name: "Epoxy Putty", price: 400 },
+
+{ name: "Rangefinder", price: 400 },
+
+{ name: "Canned Bacon", price: 200 },
+
+{ name: "Electrical Repair Kit", price: 400 },
+
+{ name: "Compass", price: 200 }
+
+]
+
+},
+
+"Explosives": {
+
+"IED Components": [
+
+{ name: "IED Container", price: 600 },
+
+{ name: "Detonator", price: 1000 }
+
+],
+
+"Other Explosives": [
+
+{ name: "US/RUS Grenades", price: 300, bulkOptions: [1, 5, 10] },
+
+{ name: "POX Vial", price: 500, bulkOptions: [1, 2, 5] },
+
+{ name: "Flashbangs", price: 50, bulkOptions: [1, 2, 5] },
+
+{ name: "Land Mines", price: 2000, bulkOptions: [1, 5, 10] },
+
+{ name: "40MM Pox Grenade", price: 6000, bulkOptions: [1, 5, 10] },
+
+{ name: "Claymores", price: 500 }
+
+]
+
+},
+
+"Storage": [
+
+{ name: "Car Tent", price: 4000 },
+
+{ name: "Large Tent", price: 3000 },
+
+{ name: "Medium Tent", price: 1500 },
+
+{ name: "Sea Chest", price: 1000 },
+
+{ name: "Barrel", price: 0, bulkOptions: [1, 2, 5] },
+
+{ name: "Ammo Box", price: 50, bulkOptions: [1, 2, 5] }
+
+],
+
+"Building": [
+
+{ name: "Box of Nails", price: 7000, bulkOptions: [1, 5, 10, 20] },
+
+{ name: "Sharpening Stones", price: 500, bulkOptions: [1, 5, 10, 20] },
+
+{ name: "4Dial Combo Lock", price: 3500, bulkOptions: [1, 5, 10] },
+
+{ name: "Hatchet", price: 500 },
+
+{ name: "Hacksaws", price: 400 },
+
+{ name: "Sledgehammer", price: 300 },
+
+{ name: "Pickaxe", price: 400 },
+
+{ name: "Field Shovel", price: 0 },
+
+{ name: "Crowbar", price: 300 },
+
+{ name: "Fireaxe", price: 400 },
+
+{ name: "Metal Wire", price: 400, bulkOptions: [1, 2, 5] },
+
+{ name: "Barbwire", price: 300, bulkOptions: [1, 2, 5] },
+
+{ name: "Pliers", price: 3500 },
+
+{ name: "Camo Netting", price: 1000 },
+
+{ name: "Rope", price: 500, bulkOptions: [1, 5, 10] }
+
+],
+
+"Vehicles": {
+
+"Repair": [
+
+{ name: "Jerry Can", price: 200 },
+
+{ name: "Blowtorch", price: 400 },
+
+{ name: "Gas Canister", price: 250 },
+
+{ name: "Tire Repair Kit", price: 200 },
+
+{ name: "Battery Charger", price: 400 }
+
+],
+
+"Parts": [
+
+{ name: "Spark Plug", price: 200 },
+
+{ name: "Glow Plug", price: 400 },
+
+{ name: "Car Battery", price: 200 },
+
+{ name: "Truck Battery", price: 400 },
+
+{ name: "Car Radiator", price: 200 }
+
+],
+
+"Tires": [
+
+{ name: "Car Tires", price: 300 },
+
+{ name: "Humvee Tires", price: 800 },
+
+{ name: "Truck Tires", price: 400 }
+
+]
+
+}
+
+};
+
+// --- SELL ITEMS ---
+const sellitems = [
+  { name: "Syringe", price: 100, bulkOptions: [1, 5, 10] },
+  { name: "Pens", price: 100, bulkOptions: [1, 5, 10] },
+  { name: "Cigarettes", price: 100, bulkOptions: [1, 10, 50, 100] },
+  { name: "Books", price: 100, bulkOptions: [1, 5, 20] },
+  { name: "Filled Blood Bag", price: 100, bulkOptions: [1, 5, 20] },
+  { name: "Cassette Tape", price: 100, bulkOptions: [1, 5, 20] },
+  { name: "Radio", price: 500, bulkOptions: [1, 5, 20] },
+  { name: "Spray Paint", price: 500, bulkOptions: [1, 5, 20] },
+  { name: "Oil", price: 1500, bulkOptions: [1, 5, 20] },
+  { name: "Brake Fluid", price: 500, bulkOptions: [1, 5, 20] },
+  { name: "Cocaine", price: 500, bulkOptions: [1, 5, 20] },
+  { name: "Mess Tin", price: 500, bulkOptions: [1, 5, 20] },
+  { name: "Bible", price: 10000 },
+  { name: "Golden Deagle", price: 2500 },
+  { name: "Engraved 1911", price: 500 },
+  { name: "Pink Derringer", price: 3000 },
+  { name: "Faction Flag", price: 0 },
+  { name: "Set of 4 Teddy Bears", price: 500, bulkOptions: [1] },
+  { name: "Set of 5 Sneakers", price: 2500, bulkOptions: [1] },
+  { name: "Cannabis (50 pieces)", price: 200, bulkOptions: [1, 10, 50, 100] },
+  { name: "Tanned Leather (8/8)", price: 1000, bulkOptions: [1, 8] }
+];
+
+// --- PELTS ---
+const pelts = [
+  { name: "Deer Pelt", price: 500, bulkOptions: [1, 5, 10] },
+  { name: "Boar Pelt", price: 500, bulkOptions: [1, 5, 10] },
+  { name: "Wolf Pelt", price: 600, bulkOptions: [1, 5, 10] },
+  { name: "Bear Pelt", price: 1000, bulkOptions: [1, 5, 10] },
+  { name: "Goat Pelt", price: 100, bulkOptions: [1, 5, 10] },
+  { name: "Cow Pelt", price: 100, bulkOptions: [1, 5, 10] },
+  { name: "Sheep Pelt", price: 100, bulkOptions: [1, 5, 10] }
+];
+
+const roles = {
+  "Operation Smoke Stack": {
+    description: "Sell 250 cigarettes at once → Each pack sells for ₵500 after",
+    bonuses: {
+      "Cigarettes": 500
+    }
+  },
+  "Ink Kingpin": {
+    description: "Sell 250 pens at once → Pens sell for ₵250 each",
+    bonuses: {
+      "Pens": 250
+    }
+  },
+  "Signal Junkie": {
+    description: "Turn in 25 radios & 25 cassettes → 25% off electronics at trader",
+    discounts: {
+      "Radio": 25,
+      "Cassette Tape": 25
+    }
+  },
+  "Krush Cartel": {
+    description: "Grow & sell 10 crates weed at once → Future weed sells for ₵400 per crate",
+    bonuses: {
+      "Cannabis": 400
+    }
+  },
+  "White Gold Mover": {
+    description: "Sell 150 cocaine units → Units now sell for ₵1,000 each",
+    bonuses: {
+      "Cocaine (powdered milk)": 1000
+    }
+  },
+  "Desert Demon": {
+    description: "Kill with Gold Deagle → 50% off pistols & ammo",
+    discounts: {
+      "Golden Deagle": 50,
+      ".357": 50,
+      "9x39 AP": 50,
+      "9x19mm": 50,
+      "5.56x45": 50,
+      ".308 WIN": 50,
+      "545x39": 50,
+      "7.62x39": 50,
+      "7.62x54mmR": 50,
+      ".45ACP": 50,
+      "12GA Buck": 50
+    }
+  },
+  "Book of ProfitZ": {
+    description: "Sell 300 books & 1 bible at once → Books sell for ₵300 each; bibles sell for ₵20,000",
+    bonuses: {
+      "Books": 300,
+      "Bible": 20000
+    }
+  },
+  "Pit Boss": {
+    description: "Turn in 25 deer steaks, 15 boar & 15 bear steaks (cooked, not rotten) → ₵10,000 + 10% off food & drinks",
+    bonuses: {
+      "Food Bonus": 10000 // placeholder for the lump sum bonus, you can handle this separately in code
+    },
+    discounts: {
+      "Canned Bacon": 10
+    }
+  },
+  "Wild Game Warlord": {
+    description: "Turn in 10 bears, 10 boar, 20 wolves, 20 deer/reindeer, 10 rabbits → Future wild game sells for 1.5x",
+    bonuses: {
+      "Bear Pelt": 1.5,  // multiplier x1.5
+      "Boar Pelt": 1.5,
+      "Wolf Pelt": 1.5,
+      "Deer Pelt": 1.5
+      // Note: rabbits not included since no data in pelts, you can add if needed
+    }
+  },
+  "Domestic Dominator": {
+    description: "Turn in 20 goats, 20 cows & 20 sheep pelts → Domestic pelts sell for double",
+    bonuses: {
+      "Goat Pelt": 2,
+      "Cow Pelt": 2,
+      "Sheep Pelt": 2
+    }
+  },
+  "Bear Broker": {
+    description: "Turn in 5 sets of teddy bears (4 colors per set) → ₵2,500 per set",
+    bonuses: {
+      "Set of 4 Teddy Bears": 2500
+    }
+  },
+  "Sneaker Head": {
+    description: "Turn in all 5 Converse sneaker colors → Earn ₵2,500 per set",
+    bonuses: {
+      "Set of 5 Sneakers": 2500
+    }
+  },
+  "Master Baiter": {
+    description: "Turn in 25 Mackerel & 25 Carp or 25 Pollock & 25 Trout. Get $15K and the role.",
+    bonuses: {
+      "Fish Bonus": 15000  // You can handle this separately
+    }
+  },
+  "Trap God": {
+    description: "Kill 4 players using traps like claymores, landmines, or tripwires. Get 50% off traps.",
+    discounts: {
+      "Land Mines": 50,
+      "Bear Trap": 50,
+      "Claymores": 50
+    }
+  },
+  "Cap Collector": {
+    description: "Turn in 9 different ball caps. Get ₵3500 and half off helmets for life.",
+    bonuses: {
+      "Cap Bonus": 3500
+    },
+    discounts: {
+      "Assault Helmet": 50,
+      "Tactical Helm": 50
+    }
+  },
+  "Boom Buddy": {
+    description: "Kill 2 players with 1 plastic explosive or claymore. Get 15% off explosives.",
+    discounts: {
+      "US/RUS Grenades": 15,
+      "POX Vial": 15,
+      "Flashbangs": 15,
+      "Land Mines": 15,
+      "40MM Pox Grenade": 15,
+      "Claymores": 15
+    }
+  },
+  "Brain Surgeon": {
+    description: "Get 100 headshots. All ammo and mags are 50% off.",
+    discounts: {
+      ".357": 50,
+      "9x39 AP": 50,
+      "9x19mm": 50,
+      "5.56x45": 50,
+      ".308 WIN": 50,
+      "545x39": 50,
+      "7.62x39": 50,
+      "7.62x54mmR": 50,
+      ".45ACP": 50,
+      "12GA Buck": 50,
+      "40 Round C-Mag": 50,
+      "60 Round C-Mag": 50,
+      "30 Round KAM Poly Mag": 50,
+      "75 Round KAM Drum Mag": 50,
+      "20 Round Vaiga Drum Mag": 50,
+      "30 Round AUR Mag": 50,
+      "20 Round DMR Mag": 50,
+      "20 Round LAR Mag": 50,
+      "10 Round VSD Mag": 50,
+      "10 Round VS89 Mag": 50
+    }
+  },
+  "Scope Fiend": {
+    description: "Land 10 sniper kills from over 500 yards. Get 50% off sniper ammo.",
+    discounts: {
+      "10 Round VSD Mag": 50,
+      "10 Round VS89 Mag": 50,
+      "7.62x54mmR": 50,
+      ".308 WIN": 50
+    }
+  },
+  "Whisper Shot": {
+    description: "Snipe and kill from 850 yards. Get 25% off sniper rifles.",
+    discounts: {
+      "LAR": 25,
+      "DMR": 25,
+      "M70 Tundra": 25,
+      "VS89": 25,
+      "VSD": 25,
+      "Mosin": 25
+    }
+  },
+  "Dexter": {
+    description: "Turn in 100 blood bags receive 10% off all medical supplies",
+    discounts: {
+      "Bandages (2-pack)": 10,
+      "Saline Bag": 10,
+      "Tetracycline": 10,
+      "Charcoal Tablets": 10,
+      "Multi Vitamins": 10,
+      "PoX Antidote": 10,
+      "Codeine Pills": 10,
+      "Morphine Injector": 10,
+      "Blood Test Kit": 10,
+      "Blood Collection Kit": 10,
+      "IV Start Kit": 10,
+      "Chlorine Tablets": 10
+    }
+  },
+  "Bolt God": {
+    description: "Kill a fully kitted player with a crossbow. All crossbows and bolts are 50% off after proof is provided.",
+    discounts: {
+      "Crossbow": 50,
+      "Crossbow Bolts": 50  // Adjust keys to your item names
+    }
+  },
+  "First Bloodz": {
+    description: " — receive 25% off at trader.",
+    discounts: {
+      // Apply 25% off all items (handle separately in your code),
+      // or list popular items here for discount
+    }
+  },
+  "First Responders": {
+    description: "For our real-world heroes — receive 10% off at trader.",
+    discounts: {
+      // Apply 10% off all items (handle separately in your code),
+      // or list popular items here for discount
+    }
+  },
+  "Health Providers": {
+    description: "For our nurse's doctors and general health providers - enjoy 10% off at trader.",
+    discounts: {
+      // Same as above - 10% off all or health-related items
+    }
+  },
+  "Veterans": {
+    description: "For active military & veterans — enjoy 10% off your trader purchases.",
+    discounts: {
+      // Same as above - 10% off all or certain categories
+    }
+  },
+  "Road Rage": {
+    description: "Run over a geared player (not in safe zone). Earn the role + 10% off vehicle parts.",
+    discounts: {
+      "Spark Plug": 10,
+      "Glow Plug": 10,
+      "Car Battery": 10,
+      "Truck Battery": 10,
+      "Car Radiator": 10,
+      "Car Tires": 10,
+      "Humvee Tires": 10,
+      "Truck Tires": 10
+    }
+  }
+};
+
+const roleBonuses = {
+  "Master Baiter": 15000,
+  "Pit Boss": 10000,
+  "Cap Collector": 3500
+  // Add more if needed
+};
+
+const itemsWithRoleTurnIn = new Set([
+  "Cigarettes",
+  "Pens",
+  "Radio",
+  "Cassette Tape",
+  "Cannabis",
+  "Cocaine (powdered milk)",
+  "Golden Deagle",
+  "Bible",
+  "Books",
+  "Deer Pelt",
+  "Boar Pelt",
+  "Bear Pelt",
+  "Wolf Pelt",
+  "Goat Pelt",
+  "Cow Pelt",
+  "Sheep Pelt",
+  "Set of 4 Teddy Bears",
+  "Set of 5 Sneakers",
+  "Mackerel",    // From Master Baiter role
+  "Carp",        // From Master Baiter role
+  "Pollock",     // From Master Baiter role
+  "Trout",       // From Master Baiter role
+  "Blood Bag"    // From Dexter (turn in 100 blood bags), check your sellitems name if it differs
+]);
+
+
+// END OF ITEMS AND ROLES
+
+document.addEventListener("DOMContentLoaded", function() {
+
+const buyItemButtonsDiv = document.getElementById("buyItemButtons");
+
+const sellItemButtonsDiv = document.getElementById("itemButtons");
+
+const sellSummaryDiv = document.getElementById("sellSummary");
+
+const buySummaryDiv = document.getElementById("buySummary");
+
+const rolesContainer1 = document.getElementById("roleColumn1");
+
+const rolesContainer2 = document.getElementById("roleColumn2");
+
+const clearAllBtn = document.getElementById("clearAllBtn");
+
+const clearRolesBtn = document.getElementById("clearRolesBtn");
+
+const calculateBtn = document.getElementById("calculateBtn");
+
+const tablinks = document.getElementsByClassName("tablinks");
+
+let buyNavigationStack = [buyitems];
+
+let sellNavigationStack = [sellitems];
+
+populateBuyButtons(buyitems, buyItemButtonsDiv, true);
+
+populateSellButtons();
+
+populateRoles();
+
+attachEventListeners();
+// Handle closing of modal
+document.querySelector(".close").onclick = function () {
+  document.getElementById("summaryModal").style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == document.getElementById("summaryModal")) {
+    document.getElementById("summaryModal").style.display = "none";
+  }
+};
+
+
+function populateBuyButtons(items, container, isTopCategory = false) {
+
+container.innerHTML = "";
+
+Object.keys(items).forEach((category) => {
+
+let button = document.createElement("button");
+
+button.textContent = category;
+
+button.className = "item-button";
+
+if (Array.isArray(items[category])) {
+
+button.onclick = () => {
+
+buyNavigationStack.push(items); // Push the current items to the navigation stack
+
+container.innerHTML = "";
+
+items[category].forEach((item) => {
+
+let itemButton = document.createElement("button");
+
+itemButton.textContent = item.name;
+
+itemButton.className = "item-button";
+
+itemButton.onclick = () => handleBuyItemClick(item);
+
+container.appendChild(itemButton);
+
+});
+
+addReturnButton(container, "buy");
+
+};
+
+} else {
+
+button.onclick = () => {
+
+buyNavigationStack.push(items); // Push the current items to the navigation stack
+
+populateBuyButtons(items[category], container, false);
+
+};
+
+}
+
+container.appendChild(button);
+
+});
+
+if (!isTopCategory) addReturnButton(container, "buy");
+
+}
+
+
+
+function addReturnButton(container, type) {
+
+let returnButton = document.createElement("button");
+
+returnButton.textContent = "←";
+
+returnButton.className = "return-button";
+
+returnButton.onclick = () => {
+
+if (type === "buy") {
+
+if (buyNavigationStack.length > 1) {
+
+buyNavigationStack.pop(); // Remove the current level from the stack
+
+const previousCategory = buyNavigationStack[buyNavigationStack.length - 1];
+
+populateBuyButtons(previousCategory, container, buyNavigationStack.length === 1);
+
+} else {
+
+populateBuyButtons(buyitems, container, true); // Return to top level if stack is empty
+
+}
+
+} else if (type === "sell") {
+
+if (sellNavigationStack.length > 1) {
+
+sellNavigationStack.pop(); // Remove the current level from the stack
+
+populateSellButtons(); // Return to sell items list
+
+} else {
+
+populateSellButtons(); // Return to top level if stack is empty
+
+}
+
+}
+
+};
+
+container.appendChild(returnButton);
+
+}
+
+function populateBulkOptions(container, item, summaryDiv, type) {
+  container.innerHTML = ""; // Clear container
+
+  item.bulkOptions.forEach((quantity) => {
+    let buttonText = `${item.name} x ${quantity}`;
+    createButton(container, buttonText, () =>
+      addItemToSummary(item.name, quantity, item.price, summaryDiv)
+    );
+  });
+
+  // Only show Role Turn-In button for sell items that qualify and exclude Tanned Leather
+  if (
+    type === "sell" &&
+    !item.name.startsWith("Tanned Leather") &&
+    itemsWithRoleTurnIn.has(item.name)
+  ) {
+    createButton(container, "Role Turn-In", () => {
+      handleRoleTurnIn(item, summaryDiv);
+    });
+  }
+
+  addReturnButton(container, type); // Return button always at bottom
+}
+
+
+function handleBuyItemClick(item) {
+
+if (item.bulkOptions) {
+
+populateBulkOptions(buyItemButtonsDiv, item, buySummaryDiv, "buy");
+
+} else {
+
+addItemToSummary(item.name, 1, item.price, buySummaryDiv);
+
+}
+
+}
+
+
+function handleSellItemClick(item) {
+
+if (item.bulkOptions) {
+
+populateBulkOptions(sellItemButtonsDiv, item, sellSummaryDiv, "sell");
+
+} else {
+
+addItemToSummary(item.name, 1, item.price, sellSummaryDiv);
+
+}
+
+}
+
+
+
+function clearItemButtons(itemButtonsDiv) {
+
+itemButtonsDiv.innerHTML = "";
+
+}
+
+
+
+function createButton(container, text, onClick, className = "item-button") {
+
+let button = document.createElement("button");
+
+button.textContent = text;
+
+button.className = className;
+
+button.onclick = onClick;
+
+container.appendChild(button);
+
+}
+
+
+
+function addItemToSummary(itemName, quantity, basePrice, summaryDiv) {
+
+let existingItemDiv = Array.from(summaryDiv.children).find(
+
+(div) => div.dataset.itemName === itemName
+
+);
+
+if (existingItemDiv) {
+
+let existingQuantity = parseInt(existingItemDiv.dataset.quantity);
+
+let newQuantity = existingQuantity + quantity;
+
+existingItemDiv.dataset.quantity = newQuantity;
+
+updateSummaryItem(existingItemDiv, newQuantity, basePrice);
+
+} else {
+
+let div = document.createElement("div");
+
+div.dataset.itemName = itemName;
+
+div.dataset.quantity = quantity;
+
+div.dataset.basePrice = basePrice;
+
+updateSummaryItem(div, quantity, basePrice);
+
+summaryDiv.appendChild(div);
+
+}
+
+if (itemName === "Bible") adjustBiblePricing(summaryDiv);
+
+updateSummaries();
+
+}
+
+
+
+function adjustBiblePricing(summaryDiv) {
+
+let bibleDiv = Array.from(summaryDiv.children).find(
+
+(div) => div.dataset.itemName === "Bible"
+
+);
+
+
+
+if (bibleDiv) {
+
+let quantity = parseInt(bibleDiv.dataset.quantity);
+
+
+
+// Check if the role that increases Bible value is active
+
+const hasBibleBoostRole = document
+
+.querySelector('.role-btn[data-role="First Blood"]')
+
+?.classList.contains("active");
+
+
+
+// Bible is worth 20,000 if the role is active, otherwise 10,000
+
+let unitPrice = hasBibleBoostRole ? 20000 : 10000;
+
+
+
+bibleDiv.dataset.basePrice = unitPrice;
+
+updateSummaryItem(bibleDiv, quantity, unitPrice);
+
+}
+
+}
+
+
+function handleRoleTurnIn(item, summaryDiv) {
+  switch (item.name) {
+    case "Cigarettes":
+      // Operation Smoke Stack: Sell 250 cigarettes at once
+      addItemToSummary(item.name, 250, 500, summaryDiv);
+      break;
+
+    case "Pens":
+      // Ink Kingpin: Sell 250 pens at once
+      addItemToSummary(item.name, 250, 250, summaryDiv);
+      break;
+
+    case "Radio":
+    case "Cassette Tape":
+      // Signal Junkie: Turn in 25 radios & 25 cassettes
+      // Usually triggers discount, no direct add here (unless you want a fixed turn-in count)
+      // If needed, add a fixed quantity of 25 each to summary:
+      addItemToSummary("Radio", 25, item.price, summaryDiv);
+      addItemToSummary("Cassette Tape", 25, item.price, summaryDiv);
+      break;
+
+    case "Cannabis":
+      // Krush Cartel: Future weed sells for ₵400 per crate
+      addItemToSummary(item.name, 10, 400, summaryDiv);
+      break;
+
+    case "Cocaine (powdered milk)":
+      // White Gold Mover: Sell 150 cocaine units at once
+      addItemToSummary(item.name, 150, 1000, summaryDiv);
+      break;
+
+    case "Set of 4 Teddy Bears":
+      // Bear Broker: Turn in 5 sets of teddy bears (4 colors per set)
+      addItemToSummary(item.name, 5, item.price, summaryDiv);
+      break;
+
+    case "Set of 5 Sneakers":
+      // Sneaker Head: Turn in all 5 Converse sneaker colors
+      addItemToSummary(item.name, 5, item.price, summaryDiv);
+      break;
+
+    case "Books":
+      // Book of ProfitZ: Sell 300 books & 1 bible at once
+      addItemToSummary(item.name, 300, 100, summaryDiv);
+      addItemToSummary("Bible", 1, 20000, summaryDiv);
+      break;
+
+    case "Bear Pelt":
+    case "Boar Pelt":
+    case "Wolf Pelt":
+    case "Deer Pelt":
+      // Wild Game Warlord: Turn in 10 bears, 10 boar, 20 wolves, 20 deer/reindeer, 10 rabbits
+      addItemToSummary("Bear Pelt", 10, 1000, summaryDiv);
+      addItemToSummary("Wolf Pelt", 20, 600, summaryDiv);
+      addItemToSummary("Boar Pelt", 10, 500, summaryDiv);
+      addItemToSummary("Deer Pelt", 20, 500, summaryDiv);
+      addItemToSummary("Rabbit Pelt", 10, 0, summaryDiv);
+      break;
+
+    case "Goat Pelt":
+    case "Cow Pelt":
+    case "Sheep Pelt":
+      // Domestic Dominator: Turn in 20 goat, 20 cow, 20 sheep pelts
+      addItemToSummary("Goat Pelt", 20, 100, summaryDiv);
+      addItemToSummary("Cow Pelt", 20, 100, summaryDiv);
+      addItemToSummary("Sheep Pelt", 20, 100, summaryDiv);
+      break;
+
+    case "Mackerel":
+    case "Carp":
+    case "Pollock":
+    case "Trout":
+      // Master Baiter: Turn in 25 Mackerel & 25 Carp or 25 Pollock & 25 Trout
+      addItemToSummary("Mackerel", 25, item.price, summaryDiv);
+      addItemToSummary("Carp", 25, item.price, summaryDiv);
+      addItemToSummary("Pollock", 25, item.price, summaryDiv);
+      addItemToSummary("Trout", 25, item.price, summaryDiv);
+      break;
+
+    case "Filled Blood Bag":
+    case "Blood Bag":
+      // Dexter: Turn in 100 blood bags
+      addItemToSummary(item.name, 100, item.price, summaryDiv);
+      break;
+
+    default:
+      console.log("No role turn-in available for this item.");
+  }
+}
+
+function applyRoleBonuses() {
+  let totalBonus = 0;
+
+  document.querySelectorAll(".role-btn.active").forEach((btn) => {
+    const role = btn.dataset.role;
+    if (roleBonuses[role]) {
+      totalBonus += roleBonuses[role];
+    }
+  });
+
+  // Show or update bonus display
+  const bonusDiv = document.getElementById("bonus-total");
+  if (bonusDiv) {
+    bonusDiv.textContent = `₵${totalBonus.toLocaleString()}`;
+  }
+}
+
+function updateSummaryItem(div, quantity, basePrice) {
+
+let itemName = div.dataset.itemName;
+
+let discountedPrice = calculateDiscountedPrice(itemName, basePrice);
+
+let totalPrice = discountedPrice * quantity;
+
+div.innerHTML = `${itemName} x ${quantity} = ${totalPrice.toFixed(
+
+0
+
+)} Cr <button class="removeOneBtn" style="background-color: orange;">x</button><button class="removeAllBtn" style="background-color: red;">x</button>`;
+
+div.querySelector(".removeOneBtn").addEventListener("click", () => {
+
+removeOneItem(div);
+
+});
+
+div.querySelector(".removeAllBtn").addEventListener("click", () => {
+
+let summaryDiv = div.parentElement;
+
+summaryDiv.removeChild(div);
+
+updateSummaries();
+
+});
+
+}
+
+
+
+function removeOneItem(div) {
+
+let quantity = parseInt(div.dataset.quantity);
+
+if (quantity > 1) {
+
+let newQuantity = quantity - 1;
+
+div.dataset.quantity = newQuantity;
+
+updateSummaryItem(div, newQuantity, parseFloat(div.dataset.basePrice));
+
+} else {
+
+let summaryDiv = div.parentElement;
+
+summaryDiv.removeChild(div);
+
+updateSummaries();
+
+}
+
+}
+
+
+
+function populateSellButtons() {
+
+const itemButtonsDiv = document.getElementById("itemButtons");
+
+clearItemButtons(itemButtonsDiv);
+
+sellitems.forEach(item => {
+
+createButton(itemButtonsDiv, item.name, () => handleSellItemClick(item));
+
+});
+
+createButton(itemButtonsDiv, "Pelts", () => {
+
+clearItemButtons(itemButtonsDiv);
+
+pelts.forEach(pelt => {
+
+createButton(itemButtonsDiv, pelt.name, () => handleSellItemClick(pelt));
+
+});
+
+addReturnButton(itemButtonsDiv, "sell");
+
+});
+
+addReturnButton(itemButtonsDiv, "sell");
+
+}
+
+
+
+function populateRoles() {
+
+Object.keys(roles).forEach((role) => {
+
+let button = document.createElement("button");
+
+button.classList.add("role-btn");
+
+button.textContent = role;
+
+button.dataset.role = role;
+
+let container = document.createElement("div");
+
+container.appendChild(button);
+
+if (Object.keys(roles).indexOf(role) % 2 === 0) {
+
+rolesContainer1.appendChild(container);
+
+} else {
+
+rolesContainer2.appendChild(container);
+
+}
+
+});
+
+}
+
+
+
+function attachEventListeners() {
+
+document.querySelectorAll(".role-btn").forEach((button) => {
+
+button.addEventListener("click", function() {
+
+this.classList.toggle("active");
+
+updateRoleEffects();
+applyRoleBonuses();
+
+});
+
+});
+
+clearAllBtn.addEventListener("click", clearAllTransactions);
+
+clearRolesBtn.addEventListener("click", clearRoles);
+
+calculateBtn.addEventListener("click", calculateAndShowTotals);
+
+Array.from(tablinks).forEach((link) => {
+
+link.addEventListener("click", function(event) {
+
+openTab(event, this.getAttribute("data-tab"));
+
+});
+
+});
+
+document.getElementById("buyTab").style.display = "block"; // Show the Buy tab initially
+
+document
+
+.querySelector(".tablinks[data-tab='buyTab']")
+
+.classList.add("active");
+
+}
+
+
+
+function calculateDiscountedPrice(itemName, basePrice) {
+
+let finalPrice = basePrice;
+
+const activeRoles = Array.from(
+
+document.querySelectorAll(".role-btn.active")
+
+).map((btn) => btn.dataset.role);
+
+activeRoles.forEach((role) => {
+
+let roleDetails = roles[role];
+
+if (roleDetails.discounts && roleDetails.discounts[itemName]) {
+
+let discount = roleDetails.discounts[itemName] / 100;
+
+finalPrice = Math.min(finalPrice, basePrice * (1 - discount));
+
+}
+
+if (roleDetails.bonuses && roleDetails.bonuses[itemName]) {
+
+finalPrice = roleDetails.bonuses[itemName];
+
+}
+
+});
+
+return finalPrice;
+
+}
+
+function clearAllTransactions() {
+  document
+    .querySelectorAll(".summary")
+    .forEach((div) => (div.innerHTML = ""));
+  
+  updateSummaries();
+  applyRoleBonuses(); // ← Add this line
+}
+
+function clearRoles() {
+  document
+    .querySelectorAll(".role-btn")
+    .forEach((button) => button.classList.remove("active"));
+
+  updateRoleEffects();
+  applyRoleBonuses(); // ← Add this line
+}
+
+function calculateAndShowTotals() {
+  let buyItems = Array.from(document.getElementById("buySummary").children);
+  let sellItems = Array.from(document.getElementById("sellSummary").children);
+
+  let buyDetails = "";
+  let totalBuy = 0;
+
+  buyItems.forEach((div) => {
+    let name = div.dataset.itemName;
+    let qty = parseInt(div.dataset.quantity);
+    let basePrice = parseFloat(div.dataset.basePrice);
+    let adjustedPrice = calculateDiscountedPrice(name, basePrice);
+    let totalPrice = adjustedPrice * qty;
+    totalBuy += totalPrice;
+    buyDetails += `${name} x ${qty} = ₵${totalPrice.toLocaleString()}\n`;
+  });
+
+  let sellDetails = "";
+  let totalSell = 0;
+
+  sellItems.forEach((div) => {
+    let name = div.dataset.itemName;
+    let qty = parseInt(div.dataset.quantity);
+    let basePrice = parseFloat(div.dataset.basePrice);
+    let adjustedPrice = calculateDiscountedPrice(name, basePrice);
+    let totalPrice = adjustedPrice * qty;
+    totalSell += totalPrice;
+    sellDetails += `${name} x ${qty} = ₵${totalPrice.toLocaleString()}\n`;
+  });
+
+  // Role discounts
+  const hasRole = (role) =>
+    document.querySelector(`.role-btn[data-role="${role}"]`)?.classList.contains("active");
+
+  let discount = 1.0;
+  let discountLabel = "";
+
+  if (hasRole("First Bloodz")) {
+    discount = 0.75;
+    discountLabel = " (First Bloodz 25% Off)";
+  } else if (
+    hasRole("Veterans") ||
+    hasRole("First Responders") ||
+    hasRole("Health Providers")
+  ) {
+    discount = 0.90;
+    if (hasRole("Veterans")) discountLabel = " (Veterans 10% Off)";
+    if (hasRole("First Responders")) discountLabel = " (First Responders 10% Off)";
+    if (hasRole("Health Providers")) discountLabel = " (Health Providers 10% Off)";
+  }
+
+  let discountedBuy = totalBuy * discount;
+
+  // Role flat currency bonuses
+  const roleBonuses = {
+    "Master Baiter": 15000,
+    "Cap Collector": 3500,
+    "Pit Boss": 10000,
+    "Bear Broker": 2500,
+    "Sneaker Head": 2500
+    // Add more if needed
+  };
+
+  let bonusTotal = 0;
+  document.querySelectorAll(".role-btn.active").forEach((btn) => {
+    const role = btn.dataset.role;
+    if (roleBonuses[role]) {
+      bonusTotal += roleBonuses[role];
+    }
+  });
+
+  let finalTotal = discountedBuy + bonusTotal;
+
+  // Final message in the new order
+  let message = `🧾 Buy Summary:\n${buyDetails || "(No items)"}\n` +
+                `🧾 Sell Summary:\n${sellDetails || "(No items)"}\n` +
+                `💸 Total Buy${discountLabel}: ₵${discountedBuy.toLocaleString()}\n` +
+                `💰 Total Sell: ₵${totalSell.toLocaleString()}\n` +
+                `🎁 Role Bonus: ₵${bonusTotal.toLocaleString()}\n` +
+
+                `🧮 Final Total: ₵${finalTotal.toLocaleString()}`;
+
+  document.getElementById("modalText").textContent = message;
+document.getElementById("summaryModal").style.display = "block";
+
+}
+
+function calculateTotal(summaryDiv) {
+
+return Array.from(summaryDiv.querySelectorAll("div")).reduce((acc, div) => {
+
+let quantity = parseInt(div.dataset.quantity);
+
+let itemName = div.dataset.itemName;
+
+let basePrice = parseFloat(div.dataset.basePrice);
+
+let adjustedPrice = calculateDiscountedPrice(itemName, basePrice);
+
+return acc + adjustedPrice * quantity;
+
+}, 0);
+
+}
+
+
+
+function openTab(evt, tabName) {
+
+let tabcontent = document.getElementsByClassName("tabcontent");
+
+let tablinks = document.getElementsByClassName("tablinks");
+
+Array.from(tabcontent).forEach(
+
+(content) => (content.style.display = "none")
+
+);
+
+Array.from(tablinks).forEach((link) => link.classList.remove("active"));
+
+document.getElementById(tabName).style.display = "block";
+
+evt.currentTarget.classList.add("active");
+
+}
+
+
+
+function updateSummaries() {
+
+// Recalculate and update the summaries for both buy and sell tabs
+
+["buy", "sell"].forEach((type) => {
+
+const summaryDiv = document.getElementById(type + "Summary");
+
+const summaryItems = summaryDiv.querySelectorAll("div");
+
+summaryItems.forEach((div) => {
+
+const itemName = div.dataset.itemName;
+
+const quantity = parseInt(div.dataset.quantity);
+
+const basePrice = parseFloat(div.dataset.basePrice);
+
+const discountedPrice = calculateDiscountedPrice(itemName, basePrice);
+
+const totalPrice = discountedPrice * quantity;
+
+// Update the displayed text for each summary item
+
+div.innerHTML = `${itemName} x ${quantity} = ${totalPrice.toFixed(
+
+
+)} Cr <button class="removeOneBtn" style="background-color: orange;">x</button><button class="removeAllBtn" style="background-color: red;">x</button>`;
+
+// Reattach the event listener to the remove button after updating innerHTML
+
+div.querySelector(".removeOneBtn").addEventListener("click", () => {
+
+removeOneItem(div);
+
+});
+
+div.querySelector(".removeAllBtn").addEventListener("click", () => {
+
+summaryDiv.removeChild(div);
+
+updateSummaries();
+
+});
+
+});
+
+});
+
+}
+
+
+
+function updateRoleEffects() {
+
+updateSummaries();
+
+}
+
+});
+
+</script>
+
+</body>
+
+
+
+</html>
